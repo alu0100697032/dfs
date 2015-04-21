@@ -53,6 +53,7 @@ GRAFO::GRAFO(char nombrefichero[85]) {
 GRAFO::~GRAFO() {
 	LPredecesores.clear();
 	LSucesores.clear();
+	pendientes.clear();
 }
 /*
  * CARGA UN NUEVO GRAFO
@@ -117,7 +118,7 @@ void GRAFO::ListaPredecesores() {
 void GRAFO::Info_Grafo() {
 	cout << "Informacion del grafo:" << endl;
 	cout << "Numero de nodos: " << numero_nodos << endl;
-	cout << "Numerod de arcos:" << numero_arcos << endl;
+	cout << "Numero de arcos:" << numero_arcos << endl;
 	if (Es_dirigido() == 1)
 		cout << "Grafo dirigido" << endl;
 	else
@@ -160,34 +161,32 @@ void GRAFO::Mostrar_Lista_Predecesores() {
 	}
 }
 
+/*
+ * DFS
+ */
+
 void GRAFO::dfs(unsigned i, vector<bool> &visitado) {
+	cout << "hola" ;
 	visitado[i] = true;
-	cout << i + 1 << ", ";
-	pendientes.erase(pendientes.begin() + i);
-	for (unsigned j = 0; j < LSucesores[i].size(); j++)
+	cout << i + 1 << " ";
+	pendientes.erase(i);
+	for (unsigned j = 0; j < LSucesores[i].size(); j++){
 		if (visitado[LSucesores[i][j].nodo] == false){
-			//cout << "Sucesor: " << LSucesores[i][j].nodo +1 << endl;
 			dfs(LSucesores[i][j].nodo, visitado);
 		}
+	}
 }
 
 void GRAFO::ComponentesConexas() {
 	vector<bool> visitado;
-	ElementoLista dummy;
-	for (unsigned i = 0; i < numero_nodos; i++){
-		visitado.push_back(false);
-		dummy.nodo = i;
-		dummy.visitado = false;
-		pendientes.push_back(dummy);
-	}
+	for(unsigned i = 0; i < numero_nodos; i++)
+		pendientes[i] = i;
 	int x =1;
-	while (pendientes.size() >= 0) {
-		cout << "Componente conexa " << x << ": ";
-		cout << pendientes[0].nodo << endl;
-		dfs(pendientes[0].nodo, visitado);
+	while (pendientes.size() > 0) {
+		cout << "Componente conexa " << x << ": { ";
+		dfs(pendientes.begin()->first, visitado);
+		cout << "}" << endl;
 		x++;
-		cout << endl;
-		cout << "Size: " << pendientes.size() << endl;
 	}
 }
 
