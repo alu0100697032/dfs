@@ -26,16 +26,18 @@ GRAFO::GRAFO(char nombrefichero[85]) {
 			textfile >> i;
 			textfile >> j;
 			dummy.nodo = j - 1;
+			dummy.visitado = false;
 			LSucesores[i - 1].push_back(dummy);
 		}
 		textfile.close();
 		if (Es_dirigido() == 1) { //Si es dirigido creamos la lista de predecesores
 			ListaPredecesores();
-		}else{ // si no, recorremos la lista de sucesores para unir bien los nodos
+		} else { // si no, recorremos la lista de sucesores para unir bien los nodos
 			vector<LA_nodo> aux = LSucesores;
-			for(i = 0; i < aux.size(); i++){
-				for(j = 0; j < aux[i].size(); j++){
+			for (i = 0; i < aux.size(); i++) {
+				for (j = 0; j < aux[i].size(); j++) {
 					dummy.nodo = i;
+					dummy.visitado = false;
 					LSucesores[LSucesores[i][j].nodo].push_back(dummy);
 				}
 			}
@@ -80,9 +82,9 @@ void GRAFO::actualizar(char nombrefichero[85]) {
 		textfile.close();
 		if (Es_dirigido() == 1) {//si es dirigido construir lista de predecesores
 			ListaPredecesores();
-		}else{// si no, recorremos la lista de sucesores para unir bien los nodos
-			for(i = 0; i < LSucesores.size(); i++){
-				for(j = 0; j < LSucesores[i].size(); j++){
+		} else {// si no, recorremos la lista de sucesores para unir bien los nodos
+			for (i = 0; i < LSucesores.size(); i++) {
+				for (j = 0; j < LSucesores[i].size(); j++) {
 					dummy.nodo = i;
 					LSucesores[LSucesores[i][j].nodo].push_back(dummy);
 				}
@@ -104,6 +106,7 @@ void GRAFO::ListaPredecesores() {
 	for (j = 0; j < LPredecesores.size(); j++) {
 		for (k = 0; k < LSucesores[j].size(); k++) {
 			dummy.nodo = j;
+			dummy.visitado = false;
 			LPredecesores[LSucesores[j][k].nodo].push_back(dummy);
 		}
 	}
@@ -156,14 +159,34 @@ void GRAFO::Mostrar_Lista_Predecesores() {
 		}
 	}
 }
-/*void GRAFO::Mostrar_Listas(int l) {
-	if (l == 0) {
-		Mostrar_Lista_Sucesores();
-	} else {
-		Mostrar_Lista_Sucesores();
-		Mostrar_Lista_Predecesores();
+
+void GRAFO::dfs(unsigned i, vector<bool> &visitado) {
+	visitado[i] = true;
+	pendientes.erase(pendientes.begin() + i);
+	cout << i + 1 << ", ";
+	for (unsigned j = 0; j < LSucesores[i].size(); j++)
+		if (visitado[LSucesores[i][j].nodo] == false)
+			dfs(LSucesores[i][j].nodo, visitado);
+}
+
+void GRAFO::ComponentesConexas() {
+	vector<bool> visitados;
+	for (int i = 0; i < numero_nodos; i++)
+		visitados.push_back(false);
+	pendientes = visitados;
+	while (pendientes.empty()) {
+		dfs(0, visitados);
+
 	}
-}*/
+	cout << pendientes.size() << endl;
+}
 
-
+/*void GRAFO::Mostrar_Listas(int l) {
+ if (l == 0) {
+ Mostrar_Lista_Sucesores();
+ } else {
+ Mostrar_Lista_Sucesores();
+ Mostrar_Lista_Predecesores();
+ }
+ }*/
 

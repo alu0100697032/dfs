@@ -29,7 +29,8 @@ int main() {
 			cin >> opcion;
 			switch (opcion) {
 			case 'c': {
-				cout << "Introduzca el nombre del fichero a procesar >> " << endl;
+				cout << "Introduzca el nombre del fichero a procesar >> "
+						<< endl;
 				cin >> fichero;
 				grafo.actualizar(fichero);
 			}
@@ -66,13 +67,15 @@ int main() {
 			cout << "| [c] Cargar un nuevo grafo:                   |" << endl;
 			cout << "| [i] Mostrar la informacion basica del grafo: |" << endl;
 			cout << "| [a] Mostrar la lista de adyacentes           |" << endl;
+			cout << "| [d] DFS                                      |" << endl;
 			cout << "| [q] Salir del programa                       |" << endl;
 			cout << "------------------------------------------------" << endl;
 			cout << endl;
 			cin >> opcion;
 			switch (opcion) {
 			case 'c': {
-				cout << "Introduzca el nombre del fichero a procesar >> " << endl;
+				cout << "Introduzca el nombre del fichero a procesar >> "
+						<< endl;
 				cin >> fichero;
 				grafo.actualizar(fichero);
 			}
@@ -83,6 +86,10 @@ int main() {
 				break;
 			case 'a': {
 				grafo.Mostrar_Lista_Sucesores();
+			}
+				break;
+			case 'd': {
+				grafo.ComponentesConexas();
 			}
 				break;
 			case 'q': {

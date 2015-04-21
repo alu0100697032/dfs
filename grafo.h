@@ -23,6 +23,7 @@ const int maxint = 1000000;
 
 typedef struct {
 	unsigned nodo; // nodo
+	bool visitado;
 	int coste; // atributo para expresar el peso, la longitud, el coste, la inversin, etc...
 } ElementoLista;
 
@@ -37,6 +38,8 @@ class GRAFO {
 	unsigned dirigido;  //0 si el grafo es no dirigido y 1 si es dirigido
 	vector<LA_nodo> LSucesores; // Lista de adyacencia de los sucesores: es una matriz donde cada fila posiblemente es posiblemente de distinto tamaño//
 	vector<LA_nodo> LPredecesores; // Lista de adyacencia de los predecesores: es una matriz donde cada fila posiblemente es posiblemente de distinto tamaño//
+	vector<string> componentesConexas;
+	vector<bool> pendientes;
 public:
 	GRAFO(char nombrefichero[]);
 	~GRAFO();
@@ -47,6 +50,9 @@ public:
 	void Mostrar_Lista_Sucesores();
 	void Mostrar_Lista_Predecesores();
 	void ListaPredecesores();
+	void dfs(unsigned i, vector<bool> &visitado);
+	void ComponentesConexas();
+
 };
 
 #endif
