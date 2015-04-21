@@ -162,6 +162,7 @@ void GRAFO::Mostrar_Lista_Predecesores() {
 
 void GRAFO::dfs(unsigned i, vector<bool> &visitado) {
 	visitado[i] = true;
+	cout << "Borrado " << pendientes[i].nodo << endl;
 	pendientes.erase(pendientes.begin() + i);
 	cout << i + 1 << ", ";
 	for (unsigned j = 0; j < LSucesores[i].size(); j++)
@@ -171,14 +172,20 @@ void GRAFO::dfs(unsigned i, vector<bool> &visitado) {
 
 void GRAFO::ComponentesConexas() {
 	vector<bool> visitados;
-	for (int i = 0; i < numero_nodos; i++)
+	ElementoLista dummy;
+	for (unsigned i = 0; i < numero_nodos; i++){
 		visitados.push_back(false);
-	pendientes = visitados;
-	while (pendientes.empty()) {
-		dfs(0, visitados);
-
+		dummy.nodo = i;
+		dummy.visitado = false;
+		pendientes.push_back(dummy);
 	}
-	cout << pendientes.size() << endl;
+	int x =0;
+	while (x < 2) {
+		dfs(pendientes[0].nodo, visitados);
+		x++;
+		cout << endl;
+		cout << "Size: " << pendientes.size() << endl;
+	}
 }
 
 /*void GRAFO::Mostrar_Listas(int l) {

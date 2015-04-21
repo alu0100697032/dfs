@@ -39,7 +39,7 @@ class GRAFO {
 	vector<LA_nodo> LSucesores; // Lista de adyacencia de los sucesores: es una matriz donde cada fila posiblemente es posiblemente de distinto tamaño//
 	vector<LA_nodo> LPredecesores; // Lista de adyacencia de los predecesores: es una matriz donde cada fila posiblemente es posiblemente de distinto tamaño//
 	vector<string> componentesConexas;
-	vector<bool> pendientes;
+	vector<ElementoLista> pendientes;
 public:
 	GRAFO(char nombrefichero[]);
 	~GRAFO();
