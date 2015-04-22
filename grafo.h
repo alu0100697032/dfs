@@ -24,7 +24,6 @@ const int maxint = 1000000;
 
 typedef struct {
 	unsigned nodo; // nodo
-	bool visitado;
 	int coste; // atributo para expresar el peso, la longitud, el coste, la inversin, etc...
 } ElementoLista;
 

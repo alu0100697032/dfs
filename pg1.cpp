@@ -8,9 +8,9 @@
 #include "grafo.h"
 
 int main() {
-	char fichero[40] = "grafo8.gr";
+	char fichero[40];
 	cout << "Introduzca el nombre del fichero a procesar >> " << endl;
-	//cin >> fichero;
+	cin >> fichero;
 	GRAFO grafo(fichero);
 	char opcion;
 	bool parar = false;

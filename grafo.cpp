@@ -26,7 +26,6 @@ GRAFO::GRAFO(char nombrefichero[85]) {
 			textfile >> i;
 			textfile >> j;
 			dummy.nodo = j - 1;
-			dummy.visitado = false;
 			LSucesores[i - 1].push_back(dummy);
 		}
 		textfile.close();
@@ -37,7 +36,6 @@ GRAFO::GRAFO(char nombrefichero[85]) {
 			for (i = 0; i < aux.size(); i++) {
 				for (j = 0; j < aux[i].size(); j++) {
 					dummy.nodo = i;
-					dummy.visitado = false;
 					LSucesores[LSucesores[i][j].nodo].push_back(dummy);
 				}
 			}
@@ -62,6 +60,7 @@ void GRAFO::actualizar(char nombrefichero[85]) {
 	//borramos la informacion de los vectores
 	LPredecesores.clear();
 	LSucesores.clear();
+	pendientes.clear();
 	ElementoLista dummy;
 	ifstream textfile;
 	textfile.open(nombrefichero);
@@ -84,8 +83,9 @@ void GRAFO::actualizar(char nombrefichero[85]) {
 		if (Es_dirigido() == 1) {//si es dirigido construir lista de predecesores
 			ListaPredecesores();
 		} else {// si no, recorremos la lista de sucesores para unir bien los nodos
-			for (i = 0; i < LSucesores.size(); i++) {
-				for (j = 0; j < LSucesores[i].size(); j++) {
+			vector<LA_nodo> aux = LSucesores;
+			for (i = 0; i < aux.size(); i++) {
+				for (j = 0; j < aux[i].size(); j++) {
 					dummy.nodo = i;
 					LSucesores[LSucesores[i][j].nodo].push_back(dummy);
 				}
@@ -107,7 +107,6 @@ void GRAFO::ListaPredecesores() {
 	for (j = 0; j < LPredecesores.size(); j++) {
 		for (k = 0; k < LSucesores[j].size(); k++) {
 			dummy.nodo = j;
-			dummy.visitado = false;
 			LPredecesores[LSucesores[j][k].nodo].push_back(dummy);
 		}
 	}
@@ -162,11 +161,10 @@ void GRAFO::Mostrar_Lista_Predecesores() {
 }
 
 /*
- * DFS
+ * PRACTICA 3: RECORRIDO DE UN GRAFO, DFS Y COMPONENTES CONEXAS
  */
 
 void GRAFO::dfs(unsigned i, vector<bool> &visitado) {
-	cout << "hola" ;
 	visitado[i] = true;
 	cout << i + 1 << " ";
 	pendientes.erase(i);
@@ -179,8 +177,10 @@ void GRAFO::dfs(unsigned i, vector<bool> &visitado) {
 
 void GRAFO::ComponentesConexas() {
 	vector<bool> visitado;
-	for(unsigned i = 0; i < numero_nodos; i++)
+	for(unsigned i = 0; i < numero_nodos; i++){
+		visitado.push_back(false);
 		pendientes[i] = i;
+	}
 	int x =1;
 	while (pendientes.size() > 0) {
 		cout << "Componente conexa " << x << ": { ";
